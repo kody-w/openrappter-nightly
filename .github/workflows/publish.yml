@@ -82,16 +82,25 @@ jobs:
 
       - name: Stamp the ring version
         working-directory: upstream/typescript
+        env:
+          RING_RANK: "1"
+          INPUT_VERSION: ${{ inputs.version }}
         run: |
           set -euo pipefail
+          # Ring version grammar, kept in step with scripts/ring.mjs:
+          #   <base>-<rank>.<ring>.<suffix>
+          # Rank is a leading NUMERIC identifier so semver precedence matches
+          # the train order (canary < nightly < alpha < beta < stable).
           base="$(node -p 'require("./package.json").version.split("-")[0]')"
-          version="${{ inputs.version }}"
+          version="$INPUT_VERSION"
           if [ -z "$version" ]; then
-            version="$(node ../scripts/ring-cli.mjs version \
-              --ring "$RING" --base "$base" \
-              --sha "$(git -C .. rev-parse HEAD)" \
-              --date "$(date -u +%Y%m%d)" \
-              --counter "${GITHUB_RUN_NUMBER}")"
+            case "$RING" in
+              canary)  suffix="$(git -C .. rev-parse HEAD | cut -c1-8)" ;;
+              nightly) suffix="$(date -u +%Y%m%d)" ;;
+              alpha|beta) suffix="${GITHUB_RUN_NUMBER}" ;;
+              *) echo "unknown ring $RING" >&2; exit 1 ;;
+            esac
+            version="${base}-${RING_RANK}.${RING}.${suffix}"
           fi
           npm version "$version" --no-git-tag-version --allow-same-version
           echo "publishing $RING_PACKAGE@$version"
