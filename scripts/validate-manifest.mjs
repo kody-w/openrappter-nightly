@@ -5,7 +5,7 @@ const rings = ['nightly', 'alpha', 'canary', 'beta', 'stable'];
 const top = ['artifact', 'predecessor', 'promoted_at', 'promotion_id', 'reason', 'receipt', 'ring', 'schema', 'source', 'status', 'version'];
 const sourceKeys = ['commit', 'repository', 'tag'];
 const artifactKeys = ['install_url', 'provenance', 'sha256', 'url'];
-const hosts = new Set(['github.com', 'registry.npmjs.org']);
+const hosts = new Set(['github.com', 'registry.npmjs.org', 'raw.githubusercontent.com']);
 const fail = (message) => { throw new Error(message); };
 const closed = (value, keys, label) => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) fail(`${label} must be an object`);
@@ -28,7 +28,7 @@ export function validateManifest(value, expectedRing, now = new Date()) {
     if (url.protocol !== 'https:' || !hosts.has(url.hostname)) fail(`unauthorized ${field}`);
   }
   if (!/^[0-9a-f]{64}$/.test(value.artifact.sha256)) fail('bad sha256');
-  if (!['github-commit-archive-sha256', 'npm-registry-download-sha256', 'github-release-download-sha256'].includes(value.artifact.provenance)) fail('bad provenance');
+  if (!['github-commit-archive-sha256', 'npm-registry-download-sha256', 'github-release-download-sha256', 'github-candidate-bundle-sha256'].includes(value.artifact.provenance)) fail('bad provenance');
   if (!['published', 'unpublished', 'disabled'].includes(value.status)) fail('bad status');
   if (value.status === 'published') {
     if (value.reason !== null || value.artifact.install_url === null) fail('published manifest is incomplete');
@@ -44,7 +44,8 @@ export function validateManifest(value, expectedRing, now = new Date()) {
   if (value.status === 'published') {
     const npm = value.artifact.provenance === 'npm-registry-download-sha256' && value.artifact.url === npmUrl && value.artifact.install_url === npmUrl;
     const release = value.artifact.provenance === 'github-release-download-sha256' && releasePrefix && value.artifact.url.startsWith(releasePrefix) && value.artifact.install_url === value.artifact.url;
-    if (!npm && !release) fail('published artifact is not bound to canonical package/version');
+    const candidate = value.artifact.provenance === 'github-candidate-bundle-sha256' && value.artifact.install_url === value.artifact.url && new RegExp(`^https://raw\\.githubusercontent\\.com/kody-w/openrappter/[0-9a-f]{40}/candidates/${value.source.commit}/${value.artifact.sha256}\\.tar\\.gz$`).test(value.artifact.url);
+    if (!npm && !release && !candidate) fail('published artifact is not bound to canonical package/version');
   } else if (value.artifact.url !== `https://github.com/kody-w/openrappter/archive/${value.source.commit}.tar.gz` || value.artifact.install_url !== null) fail('nonpublished artifact is not exact canonical source');
   return value;
 }
