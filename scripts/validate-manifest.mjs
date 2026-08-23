@@ -46,7 +46,11 @@ export function validateManifest(value, expectedRing, now = new Date()) {
     const release = value.artifact.provenance === 'github-release-download-sha256' && releasePrefix && value.artifact.url.startsWith(releasePrefix) && value.artifact.install_url === value.artifact.url;
     const candidate = value.artifact.provenance === 'github-candidate-bundle-sha256' && value.artifact.install_url === value.artifact.url && new RegExp(`^https://raw\\.githubusercontent\\.com/kody-w/openrappter/[0-9a-f]{40}/candidates/${value.source.commit}/${value.artifact.sha256}\\.tar\\.gz$`).test(value.artifact.url);
     if (!npm && !release && !candidate) fail('published artifact is not bound to canonical package/version');
-  } else if (value.artifact.url !== `https://github.com/kody-w/openrappter/archive/${value.source.commit}.tar.gz` || value.artifact.install_url !== null) fail('nonpublished artifact is not exact canonical source');
+  } else {
+    const archive = value.artifact.url === `https://github.com/kody-w/openrappter/archive/${value.source.commit}.tar.gz`;
+    const candidate = value.artifact.provenance === 'github-candidate-bundle-sha256' && new RegExp(`^https://raw\\.githubusercontent\\.com/kody-w/openrappter/[0-9a-f]{40}/candidates/${value.source.commit}/${value.artifact.sha256}\\.tar\\.gz$`).test(value.artifact.url);
+    if ((!archive && !candidate) || value.artifact.install_url !== null) fail('nonpublished artifact is not exact canonical source');
+  }
   return value;
 }
 
