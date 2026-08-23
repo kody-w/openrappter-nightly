@@ -11,3 +11,8 @@ therefore fails closed.
 Train: `nightly -> alpha -> canary -> beta -> stable`.
 
 Validate with `node scripts/validate-manifest.mjs .ring/manifest.json nightly`.
+
+Distribution invariant: this finalized receipt is step 1 of the machine-required
+nightly → alpha → canary → beta chain. No stable/tag/npm/PyPI/GitHub release or
+installer channel may bypass it. Tests in `openrappter-release-train`, not this
+prose, are authoritative.
