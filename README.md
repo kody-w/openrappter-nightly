@@ -16,3 +16,7 @@ Distribution invariant: this finalized receipt is step 1 of the machine-required
 nightly → alpha → canary → beta chain. No stable/tag/npm/PyPI/GitHub release or
 installer channel may bypass it. Tests in `openrappter-release-train`, not this
 prose, are authoritative.
+
+`.ring/manifest.json` and `.ring/authority.json` on this repository's `main`
+are informational. Clients resolve latest only from the monotonic
+`openrappter-release-train/heads/nightly.json` authority head.
