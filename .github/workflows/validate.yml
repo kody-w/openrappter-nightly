@@ -1,14 +1,13 @@
-name: Validate ring pointer
+name: Validate and receive ring pointer
 on:
   pull_request:
-  push:
-    branches: [main]
-  repository_dispatch:
-    types: [ring-promotion]
+  push: { branches: [main] }
+  repository_dispatch: { types: [ring-promotion, ring-receipt] }
 permissions:
-  contents: read
+  contents: write
 jobs:
   manifest:
+    if: github.event_name != 'repository_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,3 +15,12 @@ jobs:
         with: { node-version: 22 }
       - run: node --test tests/*.test.mjs
       - run: node scripts/validate-manifest.mjs .ring/manifest.json nightly
+  receive:
+    if: github.event_name == 'repository_dispatch' && github.event.sender.login == 'kody-w'
+    uses: kody-w/openrappter-release-train/.github/workflows/receive.yml@3f84a14c56d4e0b13971a7f253cdf9d3dd7d310f
+    with:
+      authority_commit: 3f84a14c56d4e0b13971a7f253cdf9d3dd7d310f
+      action: ${{ github.event.action }}
+      payload_json: ${{ toJson(github.event.client_payload) }}
+      target_ring: nightly
+      target_repository: kody-w/openrappter-nightly
