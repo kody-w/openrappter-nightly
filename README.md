@@ -20,3 +20,7 @@ prose, are authoritative.
 `.ring/manifest.json` and `.ring/authority.json` on this repository's `main`
 are informational. Clients resolve latest only from the monotonic
 `openrappter-release-train/heads/nightly.json` authority head.
+
+Applications are immutable per sequence at
+`.ring/applied/<20-digit-sequence>-<request-id>.json`; snapshots and tagged
+release candidates use separate candidate namespaces for the same source.
