@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs';
 
 const rings = ['nightly', 'alpha', 'canary', 'beta', 'stable'];
-const top = ['artifact', 'predecessor', 'promoted_at', 'promotion_id', 'reason', 'receipt', 'ring', 'schema', 'source', 'status', 'version'];
+const top = ['artifact', 'channel_version', 'intended_release_tag', 'predecessor', 'promoted_at', 'promotion_id', 'reason', 'receipt', 'ring', 'schema', 'source', 'status', 'version'];
 const sourceKeys = ['commit', 'repository', 'tag'];
 const artifactKeys = ['install_url', 'provenance', 'sha256', 'url'];
 const hosts = new Set(['github.com', 'registry.npmjs.org', 'raw.githubusercontent.com']);
@@ -39,6 +39,7 @@ export function validateManifest(value, expectedRing, now = new Date()) {
   if (Number.isNaN(promoted.valueOf()) || promoted > new Date(now.valueOf() + 300000)) fail('bad or future promoted_at');
   if (value.receipt !== null && !/^https:\/\/github\.com\/kody-w\/openrappter-release-train\/blob\/[0-9a-f]{40}\/receipts\/.+\.json$/.test(value.receipt)) fail('receipt is not immutable');
   if (value.promotion_id !== null && !/^[0-9a-f]{64}$/.test(value.promotion_id)) fail('bad promotion id');
+  if (value.intended_release_tag !== null && !/^v[0-9][0-9A-Za-z.+-]*$/.test(value.intended_release_tag)) fail('bad intended release tag');
   const npmUrl = `https://registry.npmjs.org/openrappter/-/openrappter-${value.version}.tgz`;
   const releasePrefix = value.source.tag ? `https://github.com/kody-w/openrappter/releases/download/${value.source.tag}/` : '';
   if (value.status === 'published') {
