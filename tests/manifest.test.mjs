@@ -20,7 +20,7 @@ test('future and incomplete published pointers fail', () => {
 test('promotion receiver pulls immutable requests with only its GITHUB_TOKEN', () => {
   const workflow = readFileSync(new URL('../.github/workflows/apply-promotion.yml', import.meta.url), 'utf8');
   assert.doesNotMatch(workflow, /RING_AUTHORITY_TOKEN|repository_dispatch|secrets\./);
-  assert.match(workflow, /apply-request\.yml@b5a6354b05b6f37d50ca9607e821022a688c9990/);
+  assert.match(workflow, /apply-request\.yml@ee264e0e9f6d5022747518ac332dcc47f52c07a6/);
   assert.match(workflow, /contents: write/);
   assert.ok(workflow.includes("request_sequence:\n        required: false\n        type: string\n        default: '0'"));
   assert.ok(workflow.includes("requested_sequence: ${{ inputs.request_sequence || '0' }}"));
