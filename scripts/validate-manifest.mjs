@@ -8,7 +8,7 @@ const artifactKeys = ['install_url', 'provenance', 'sha256', 'url'];
 const hosts = new Set(['github.com', 'registry.npmjs.org', 'raw.githubusercontent.com']);
 const fail = (message) => { throw new Error(message); };
 export const parseCandidateBundleUrl = value => {
-  const u=new URL(value); if(!value.startsWith('https://raw.githubusercontent.com/')||u.protocol!=='https:'||u.hostname!=='raw.githubusercontent.com'||u.username||u.password||u.port||u.search||u.hash||/[^\x20-\x7e]|%|\\/.test(u.pathname)) fail('candidate URL rejected');
+  const u=new URL(value); if(!/^[\x20-\x7e]+$/.test(value)||!value.startsWith('https://raw.githubusercontent.com/')||u.protocol!=='https:'||u.hostname!=='raw.githubusercontent.com'||u.username||u.password||u.port||u.search||u.hash||/[^\x20-\x7e]|%|\\/.test(u.pathname)) fail('candidate URL rejected');
   const p=u.pathname.replace(/^\//,'').split('/'); if(p.length!==8||p[0]!=='kody-w'||p[1]!=='openrappter'||p[3]!=='candidates'||!/^[0-9a-f]{40}$/.test(p[2])||!/^[0-9a-f]{40}$/.test(p[4])||!['snapshot','release'].includes(p[5])||!/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(p[6])||p[6]==='.'||p[6]==='..'||!/^[0-9a-f]{64}\.tar\.gz$/.test(p[7])) fail('candidate URL rejected'); return {source:p[4],sha:p[7].slice(0,64)};
 };
 const closed = (value, keys, label) => {

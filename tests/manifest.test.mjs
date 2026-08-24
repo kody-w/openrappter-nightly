@@ -6,7 +6,7 @@ const m = JSON.parse(readFileSync(new URL('../.ring/manifest.json', import.meta.
 test('candidate URL parser accepts only the closed namespace', () => {
   const url = `https://raw.githubusercontent.com/kody-w/openrappter/${'b'.repeat(40)}/candidates/${'a'.repeat(40)}/release/tag-djEuMTMuMA/${'c'.repeat(64)}.tar.gz`;
   assert.deepEqual(parseCandidateBundleUrl(url), { source: 'a'.repeat(40), sha: 'c'.repeat(64) });
-  for (const invalid of [`${url}?x=1`, url.replace('/release/', '/release/extra/'), url.replace('tag-djEuMTMuMA', '..'), url.replace('raw.githubusercontent.com', 'example.com')]) assert.throws(() => parseCandidateBundleUrl(invalid));
+  for (const invalid of [`${url}?x=1`, `${url}\n`, url.replace('/release/tag-djEuMTMuMA', ''), url.replace('/release/', '/release/extra/'), url.replace('tag-djEuMTMuMA', '..'), url.replace('raw.githubusercontent.com', 'example.com')]) assert.throws(() => parseCandidateBundleUrl(invalid));
 });
 test('current nightly pointer validates', () => validateManifest(m, 'nightly', new Date('2026-08-23T20:00:00Z')));
 test('closed contract rejects injected fields and repository', () => {
