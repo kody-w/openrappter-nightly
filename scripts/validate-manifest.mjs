@@ -7,6 +7,10 @@ const sourceKeys = ['commit', 'repository', 'tag'];
 const artifactKeys = ['install_url', 'provenance', 'sha256', 'url'];
 const hosts = new Set(['github.com', 'registry.npmjs.org', 'raw.githubusercontent.com']);
 const fail = (message) => { throw new Error(message); };
+export const parseCandidateBundleUrl = value => {
+  const u=new URL(value); if(!value.startsWith('https://raw.githubusercontent.com/')||u.protocol!=='https:'||u.hostname!=='raw.githubusercontent.com'||u.username||u.password||u.port||u.search||u.hash||/[^\x20-\x7e]|%|\\/.test(u.pathname)) fail('candidate URL rejected');
+  const p=u.pathname.replace(/^\//,'').split('/'); if(p.length!==8||p[0]!=='kody-w'||p[1]!=='openrappter'||p[3]!=='candidates'||!/^[0-9a-f]{40}$/.test(p[2])||!/^[0-9a-f]{40}$/.test(p[4])||!['snapshot','release'].includes(p[5])||!/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(p[6])||p[6]==='.'||p[6]==='..'||!/^[0-9a-f]{64}\.tar\.gz$/.test(p[7])) fail('candidate URL rejected'); return {source:p[4],sha:p[7].slice(0,64)};
+};
 const closed = (value, keys, label) => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) fail(`${label} must be an object`);
   if (JSON.stringify(Object.keys(value).sort()) !== JSON.stringify(keys)) fail(`${label} is not closed`);
@@ -45,12 +49,12 @@ export function validateManifest(value, expectedRing, now = new Date()) {
   if (value.status === 'published') {
     const npm = value.artifact.provenance === 'npm-registry-download-sha256' && value.artifact.url === npmUrl && value.artifact.install_url === npmUrl;
     const release = value.artifact.provenance === 'github-release-download-sha256' && releasePrefix && value.artifact.url.startsWith(releasePrefix) && value.artifact.install_url === value.artifact.url;
-    const candidate = value.artifact.provenance === 'github-candidate-bundle-sha256' && value.artifact.install_url === value.artifact.url && new RegExp(`^https://raw\\.githubusercontent\\.com/kody-w/openrappter/[0-9a-f]{40}/candidates/${value.source.commit}/${value.artifact.sha256}\\.tar\\.gz$`).test(value.artifact.url);
-    if (!npm && !release && !candidate) fail('published artifact is not bound to canonical package/version');
+    let candidateOk=false; if(value.artifact.provenance==='github-candidate-bundle-sha256'&&value.artifact.install_url===value.artifact.url){try{const c=parseCandidateBundleUrl(value.artifact.url);candidateOk=c.source===value.source.commit&&c.sha===value.artifact.sha256;}catch{}}
+    if (!npm && !release && !candidateOk) fail('published artifact is not bound to canonical package/version');
   } else {
     const archive = value.artifact.url === `https://github.com/kody-w/openrappter/archive/${value.source.commit}.tar.gz`;
-    const candidate = value.artifact.provenance === 'github-candidate-bundle-sha256' && new RegExp(`^https://raw\\.githubusercontent\\.com/kody-w/openrappter/[0-9a-f]{40}/candidates/${value.source.commit}/${value.artifact.sha256}\\.tar\\.gz$`).test(value.artifact.url);
-    if ((!archive && !candidate) || value.artifact.install_url !== null) fail('nonpublished artifact is not exact canonical source');
+    let candidateOk=false; if(value.artifact.provenance==='github-candidate-bundle-sha256'){try{const c=parseCandidateBundleUrl(value.artifact.url);candidateOk=c.source===value.source.commit&&c.sha===value.artifact.sha256;}catch{}}
+    if ((!archive && !candidateOk) || value.artifact.install_url !== null) fail('nonpublished artifact is not exact canonical source');
   }
   return value;
 }
