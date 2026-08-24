@@ -1,34 +1,26 @@
-# openrappter-nightly
+# OpenRappter nightly ring
 
-Ring **nightly** (rank 1) of the OpenRappter release train.
+Nightly follows **vetted canonical `main` snapshots**. It records an exact
+40-hex source commit and measured archive SHA-256; it never treats `main` as a
+release identity. This repository is a pointer, not a code copy.
 
-    canary -> nightly -> alpha -> beta -> stable
+The current [manifest](.ring/manifest.json) truthfully says `unpublished`: the
+snapshot exists, but an installable nightly artifact does not. `--ring nightly`
+therefore fails closed.
 
-- **Publishes to:** `openrappter-nightly` on npm — and nothing else.
-- **Promotes to:** `alpha`
-- **Cut by:** daily, promoted from canary
+Train: `nightly -> alpha -> canary -> beta -> stable`.
 
-## Install this ring
+Validate with `node scripts/validate-manifest.mjs .ring/manifest.json nightly`.
 
-```sh
-curl -fsSL https://kody-w.github.io/openrappter/install.sh | bash -s -- --channel nightly
-```
+Distribution invariant: this finalized receipt is step 1 of the machine-required
+nightly → alpha → canary → beta chain. No stable/tag/npm/PyPI/GitHub release or
+installer channel may bypass it. Tests in `openrappter-release-train`, not this
+prose, are authoritative.
 
-or directly:
+`.ring/manifest.json` and `.ring/authority.json` on this repository's `main`
+are informational. Clients resolve latest only from the monotonic
+`openrappter-release-train/heads/nightly.json` authority head.
 
-```sh
-npm install -g openrappter-nightly
-```
-
-## Why a separate repo and package
-
-Production is **unreachable** from this repo, not merely guarded. This repo has
-no credentials for and no code path to the production `openrappter` package.
-Deleting this repo and its npm package outright would have zero effect on
-anyone running the released build.
-
-Promotion republishes the *identical tarball* under the next ring's package
-name — it never rebuilds, mirroring the exact-commit promotion rule of the rapp
-release train.
-
-Dashboard: https://kody-w.github.io/openrappter-release-train/
+Applications are immutable per sequence at
+`.ring/applied/<20-digit-sequence>-<request-id>.json`; snapshots and tagged
+release candidates use separate candidate namespaces for the same source.
