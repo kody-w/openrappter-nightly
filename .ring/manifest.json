@@ -1,25 +1,24 @@
 {
-  "schema": "openrappter-ring/v1",
+  "artifact": {
+    "install_url": null,
+    "provenance": "github-candidate-bundle-sha256",
+    "sha256": "26deb0c7b6ac06f926339ba886eb4b5dbf5fd1a8c35108fff03e0ff2149f7abf",
+    "url": "https://raw.githubusercontent.com/kody-w/openrappter/818cf984dc7a6f66450b9928dbefd2355f2723f6/candidates/21e9dd8ec034ed510bef6a16823d2a556ecbef77/snapshot/nightly-20260824-0328/26deb0c7b6ac06f926339ba886eb4b5dbf5fd1a8c35108fff03e0ff2149f7abf.tar.gz"
+  },
+  "channel_version": "0.1.0-beta.11",
+  "intended_release_tag": null,
+  "predecessor": null,
+  "promoted_at": "2026-08-24T03:28:10Z",
+  "promotion_id": "b39e88d29d238cc0d688aa8294db766ac4f357db6593b38b5a75fbdb347329a0",
+  "reason": "Continuous untagged snapshot; never stable-publishable.",
+  "receipt": null,
   "ring": "nightly",
+  "schema": "openrappter-ring/v1",
   "source": {
+    "commit": "21e9dd8ec034ed510bef6a16823d2a556ecbef77",
     "repository": "kody-w/openrappter",
-    "commit": "9913ca2e5237c44620f5422644cbe6060f2c8c18",
     "tag": null
   },
-  "version": "1.13.0-nightly.20260823+g9913ca2",
-  "artifact": {
-    "url": "https://github.com/kody-w/openrappter/archive/9913ca2e5237c44620f5422644cbe6060f2c8c18.tar.gz",
-    "install_url": null,
-    "sha256": "96162c003da42118290b48df71bcb3aa6a940f1ac7d5e3ec304f757f2c0a719c",
-    "provenance": "github-commit-archive-sha256"
-  },
-  "promoted_at": "2026-08-23T14:38:58Z",
-  "predecessor": null,
   "status": "unpublished",
-  "reason": "The main snapshot is pinned and checksummed, but no installable nightly package exists yet.",
-  "receipt": null,
-  "promotion_id": "44512212774063f8fabb716ff1a6cc32f034ee69d1dec82e23888492189a5612",
-  "intended_release_tag": null,
-  "channel_version": null,
-  "intended_release_tag": null
+  "version": "1.13.0"
 }
