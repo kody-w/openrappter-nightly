@@ -10,4 +10,4 @@ jobs:
   apply:
     permissions: { contents: write }
     uses: kody-w/openrappter-release-train/.github/workflows/apply-request.yml@5d91457c477a8b043af9ee4881d2941d1b834616
-    with: { requested_sequence: '${{ inputs.request_sequence || 0 }}', target_ring: nightly, target_repository: kody-w/openrappter-nightly }
+    with: { requested_sequence: ${{ inputs.request_sequence || 0 }}, target_ring: nightly, target_repository: kody-w/openrappter-nightly }
