@@ -22,5 +22,5 @@ test('promotion receiver pulls immutable requests with only its GITHUB_TOKEN', (
   assert.doesNotMatch(workflow, /RING_AUTHORITY_TOKEN|repository_dispatch|secrets\./);
   assert.match(workflow, /apply-request\.yml@[0-9a-f]{40}/);
   assert.match(workflow, /contents: write/);
-  assert.ok(workflow.includes('requested_sequence: ${{ inputs.request_sequence || 0 }}'));
+  assert.ok(workflow.includes('with:\n      requested_sequence: ${{ inputs.request_sequence || 0 }}\n'));
 });
