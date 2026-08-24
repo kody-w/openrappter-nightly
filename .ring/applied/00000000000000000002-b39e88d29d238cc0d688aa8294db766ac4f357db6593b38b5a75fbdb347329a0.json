@@ -1,0 +1,12 @@
+{
+  "request_authority_commit": "813eafd957982e2c64d318caa12be3e494a1c7e4",
+  "request_id": "b39e88d29d238cc0d688aa8294db766ac4f357db6593b38b5a75fbdb347329a0",
+  "request_path": "requests/nightly/00000000000000000002-b39e88d29d238cc0d688aa8294db766ac4f357db6593b38b5a75fbdb347329a0.json",
+  "request_sequence": 2,
+  "request_sha256": "e8313110af765a16421dbdf9d66031adb3e35d65c0d9311296602e37bfcca176",
+  "schema": "openrappter-applied-request/v1",
+  "target_manifest_commit": "28583c5e45c28a751a09cbd962bd764342f7461b",
+  "target_manifest_sha256": "e05d295a5a3a0da96cbf0aef2d523c72ed69fb9b848a36d7fcdef92c3bb289c4",
+  "target_repository": "kody-w/openrappter-nightly",
+  "target_ring": "nightly"
+}
