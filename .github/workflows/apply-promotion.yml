@@ -12,7 +12,7 @@ concurrency: { group: apply-nightly, cancel-in-progress: false }
 jobs:
   apply:
     permissions: { contents: write }
-    uses: kody-w/openrappter-release-train/.github/workflows/apply-request.yml@ee264e0e9f6d5022747518ac332dcc47f52c07a6
+    uses: kody-w/openrappter-release-train/.github/workflows/apply-request.yml@813eafd957982e2c64d318caa12be3e494a1c7e4
     with:
       requested_sequence: ${{ inputs.request_sequence || '0' }}
       target_ring: nightly
