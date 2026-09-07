@@ -1,24 +1,24 @@
 {
   "artifact": {
-    "install_url": null,
+    "install_url": "https://raw.githubusercontent.com/kody-w/openrappter/1441d8bf8227f4d9a20ac10cd4609f4a99496c7d/candidates/2241544be7229e9c480c983e569a712280f1bd0a/release/tag-djEuMTMuMQ/e65da0b8faabbb735a7e152876519af31f56b94e9bc30a015f9767828b7c16b8.tar.gz",
     "provenance": "github-candidate-bundle-sha256",
-    "sha256": "26deb0c7b6ac06f926339ba886eb4b5dbf5fd1a8c35108fff03e0ff2149f7abf",
-    "url": "https://raw.githubusercontent.com/kody-w/openrappter/818cf984dc7a6f66450b9928dbefd2355f2723f6/candidates/21e9dd8ec034ed510bef6a16823d2a556ecbef77/snapshot/nightly-20260824-0328/26deb0c7b6ac06f926339ba886eb4b5dbf5fd1a8c35108fff03e0ff2149f7abf.tar.gz"
+    "sha256": "e65da0b8faabbb735a7e152876519af31f56b94e9bc30a015f9767828b7c16b8",
+    "url": "https://raw.githubusercontent.com/kody-w/openrappter/1441d8bf8227f4d9a20ac10cd4609f4a99496c7d/candidates/2241544be7229e9c480c983e569a712280f1bd0a/release/tag-djEuMTMuMQ/e65da0b8faabbb735a7e152876519af31f56b94e9bc30a015f9767828b7c16b8.tar.gz"
   },
   "channel_version": "0.1.0-beta.11",
-  "intended_release_tag": null,
+  "intended_release_tag": "v1.13.1",
   "predecessor": null,
-  "promoted_at": "2026-08-24T03:28:10Z",
-  "promotion_id": "b39e88d29d238cc0d688aa8294db766ac4f357db6593b38b5a75fbdb347329a0",
-  "reason": "Continuous untagged snapshot; never stable-publishable.",
+  "promoted_at": "2026-09-07T17:38:06Z",
+  "promotion_id": "284cb104c50101d61d8d1d5a8ce0b74039d9a30f7bbce7b15d2fb4b71cca3689",
+  "reason": null,
   "receipt": null,
   "ring": "nightly",
   "schema": "openrappter-ring/v1",
   "source": {
-    "commit": "21e9dd8ec034ed510bef6a16823d2a556ecbef77",
+    "commit": "2241544be7229e9c480c983e569a712280f1bd0a",
     "repository": "kody-w/openrappter",
     "tag": null
   },
-  "status": "unpublished",
-  "version": "1.13.0"
+  "status": "published",
+  "version": "1.13.1"
 }
