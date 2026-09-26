@@ -1,5 +1,9 @@
 # OpenRappter nightly ring
 
+<!-- rapp1:network-header:start -->
+[![RAPP/1](https://kody-w.github.io/rapp-hive-public/portfolio/badges/openrappter-nightly.svg)](https://github.com/kody-w/rapp-hive-public/blob/main/portfolio/repos/openrappter-nightly.md) · **New to RAPP?** [Start here: get your Brainstem →](https://github.com/kody-w/rapp-installer#start-here)
+<!-- rapp1:network-header:end -->
+
 Nightly follows **vetted canonical `main` snapshots**. It records an exact
 40-hex source commit and measured archive SHA-256; it never treats `main` as a
 release identity. This repository is a pointer, not a code copy.
